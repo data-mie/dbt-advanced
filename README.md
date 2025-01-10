@@ -1,1 +1,1 @@
-# dbt-advanced-pre-course
+# dbt-advanced
