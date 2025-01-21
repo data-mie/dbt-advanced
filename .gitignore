@@ -2,4 +2,4 @@
 # these are the default directory names, adjust/add to fit your needs
 target/
 dbt_packages/
-logs/
+package-lock.yml
