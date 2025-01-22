@@ -19,3 +19,8 @@ sources:
               - not_null
       - name: deliveries
         description: Each record in this table represents an order delivery in our ecommerce application.
+
+  - name: sheets
+    database: raw
+    tables:
+      - name: customer_survey_responses

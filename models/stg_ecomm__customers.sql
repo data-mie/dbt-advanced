@@ -4,9 +4,7 @@ with source as (
 ),
 
 renamed as (
-    select
-        *,
-        id as customer_id
+    select * rename id as customer_id
     from source
 ),
 
