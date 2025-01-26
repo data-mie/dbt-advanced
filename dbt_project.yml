@@ -18,9 +18,5 @@ clean-targets:
 
 models:
   dbt_training:
-    staging:
-      +materialized: view
-    intermediate:
-      +materialized: view
-    marts:
-      +materialized: view
+    #staging:
+    #  +materialized: view
