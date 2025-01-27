@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: my_data_product
+    description: ""
+    config:
+      contract:
+        enforced: true
+    versions:
+      - v: 1
+    columns:
+      - name: id
+        data_type: number
+        description: ""
+
+      - name: color
+        data_type: varchar
+        description: ""
