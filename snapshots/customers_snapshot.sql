@@ -12,5 +12,3 @@
 select * from {{ source('ecomm', 'customers') }}
 
 {% endsnapshot %}
-
-
