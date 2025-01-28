@@ -1,6 +1,13 @@
+{{
+    config(
+        materialized='incremental',
+        unique_key='order_id'
+    )
+}}
 with orders as (
     select *
     from {{ ref('stg_ecomm__orders') }}  stg
+    
 ),
 
 deliveries as (
@@ -40,6 +47,9 @@ final as (
     select *
     from joined
 )
-
 select *
 from final
+{% if is_incremental() %}
+    -- this filter will only be applied on an incremental run
+   where ordered_at > (select dateadd('day', -3, max(ordered_at)) from {{ this }})
+{% endif %}
