@@ -1,6 +1,6 @@
 with orders as (
     select *
-    from {{ ref('stg_ecomm__orders') }}
+    from {{ ref('stg_ecomm__orders') }}  stg
 ),
 
 deliveries as (
@@ -21,6 +21,7 @@ joined as (
         orders.ordered_at,
         orders.order_status,
         orders.total_amount,
+        map.store_name,
         datediff(
             'minutes', orders.ordered_at, deliveries_filtered.delivered_at
         ) as delivery_time_from_order,
@@ -29,9 +30,10 @@ joined as (
             deliveries_filtered.picked_up_at,
             deliveries_filtered.delivered_at
         ) as delivery_time_from_collection
-    from orders
+    from orders 
     left join deliveries_filtered
         on orders.order_id = deliveries_filtered.order_id
+    left join {{ ref('stores') }} map  on orders.store_id=map.store_id
 ),
 
 final as (
