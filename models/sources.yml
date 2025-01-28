@@ -24,3 +24,8 @@ sources:
     database: raw
     tables:
       - name: customer_survey_responses
+
+  - name: stripe
+    database: raw
+    tables:
+      - name: payments
