@@ -17,10 +17,14 @@ clean-targets:
   - "dbt_packages"
 
 models:
+  elementary: 
+      +schema: elementary
   dbt_training:
     staging:
       #+materialized: view
       +schema: staging
     transform:
       +schema: transform
+    marts: 
+      +materialized: table
 
