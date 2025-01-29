@@ -1,9 +1,4 @@
-{{
-    config(
-        materialized='incremental',
-        unique_key='order_id'
-    )
-}}
+
 with orders as (
     select *
     from {{ ref('stg_ecomm__orders') }}  stg
@@ -47,9 +42,11 @@ final as (
     select *
     from joined
 )
-select *
+select *,   datediff('day', lag(ordered_at) over (partition by customer_id order by ordered_at), ordered_at) as days_since_last_order
 from final
-{% if is_incremental() %}
-    -- this filter will only be applied on an incremental run
-   where ordered_at > (select dateadd('day', -3, max(ordered_at)) from {{ this }})
-{% endif %}
+
+
+
+--It's useful for analysis to know how many days had passed between an order and the prior order (for a given customer).
+
+--Using a window function, add a column days_since_last_order to the orders model.
