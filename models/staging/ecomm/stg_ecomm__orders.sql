@@ -21,12 +21,18 @@ renamed as (
         when _dbt_source_relation ilike '%orders_de' then 'EUR' end as currency
     from source
 ),
-
+deduplicate as (
+    {{ dbt_utils.deduplicate(
+        relation='renamed',
+        partition_by='order_id',
+        order_by="_synced_at desc",
+   )}}
+),
 
 final as (
     select *
-    from renamed
+    from deduplicate
 )
 
-select *
+select count(*)
 from final
