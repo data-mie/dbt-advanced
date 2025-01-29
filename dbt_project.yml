@@ -17,17 +17,18 @@ clean-targets:
   - "dbt_packages"
 
 models:
-  +persist_docs:
+  elementary: 
+    +schema: elementary
+  dbt_training:
+    +persist_docs:
       relation: true
       columns: true
-  elementary: 
-      +schema: elementary
-  dbt_training:
     staging:
       #+materialized: view
       +schema: staging
     transform:
       +schema: transform
     marts: 
+      +schema: marts
       +materialized: table
 
