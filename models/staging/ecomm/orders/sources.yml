@@ -1,0 +1,35 @@
+version: 2
+
+sources:
+  - name: ecomm
+    database: raw
+    tables:
+      - name: orders_us
+        description: Each record in this table represents a customer in our ecommerce application.
+        columns:
+          - name: id
+            tests:
+              - unique
+              - not_null
+      - name: orders_de
+        identifier: orders_de
+        description: Each record in this table represents an order in our ecommerce application.
+        columns:
+          - name: id
+            tests:
+              - unique
+              - not_null
+      - name: orders_au
+        description: Each record in this table represents an order in our ecommerce application.
+        columns:
+          - name: id
+            tests:
+              - unique
+              - not_null
+      - name: orders
+        description: Each record in this table represents an order in our ecommerce application.
+        columns:
+          - name: id
+            tests:
+              - unique
+              - not_null

@@ -1,6 +1,6 @@
 with source as (
     select *
-    from {{ source('ecomm', 'orders') }}
+    from {{ source('ecomm', 'orders_us') }}
 ),
 
 renamed as (
