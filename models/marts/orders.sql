@@ -1,5 +1,12 @@
+{{
+    config(
+        materialized='incremental',
+        unique_key='order_id'
+    )
+}}
+
 with orders as (
-    select *
+    select *, datediff(day, created_at, _synced_at)
     from {{ ref('stg_ecomm__orders') }}
 ),
 
@@ -14,6 +21,11 @@ deliveries_filtered as (
     where delivery_status = 'delivered'
 ),
 
+store as (
+    select * 
+    from {{ ref("stores") }}
+),
+
 joined as (
     select
         orders.order_id,
@@ -21,6 +33,7 @@ joined as (
         orders.ordered_at,
         orders.order_status,
         orders.total_amount,
+        store.store_name,
         datediff(
             'minutes', orders.ordered_at, deliveries_filtered.delivered_at
         ) as delivery_time_from_order,
@@ -28,10 +41,13 @@ joined as (
             'minutes',
             deliveries_filtered.picked_up_at,
             deliveries_filtered.delivered_at
-        ) as delivery_time_from_collection
+        ) as delivery_time_from_collection,
+        ifnull(datediff(day, lag(ordered_at) over (partition by customer_id order by ordered_at), ordered_at),0) days_since_last_order
     from orders
     left join deliveries_filtered
         on orders.order_id = deliveries_filtered.order_id
+    left join store
+        on orders.store_id = store.store_id  
 ),
 
 final as (
@@ -41,3 +57,8 @@ final as (
 
 select *
 from final
+{% if is_incremental() %}
+-- this filter will only be applied on an incremental run
+where ordered_at > (select dateadd(day, -3, max(ordered_at)) from {{ this }}) 
+
+{% endif %}
