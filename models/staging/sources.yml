@@ -20,9 +20,6 @@ sources:
       - name: deliveries
         description: Each record in this table represents an order delivery in our ecommerce application.
 
-      - name: orders_au
-        description: nothing for now
-
   - name: sheets
     database: raw
     tables:

@@ -53,6 +53,7 @@ joined as (
         ) as delivery_time_from_collection,
         -- store.store_name instead of orders.store_name if i added the with store()
     datediff('day', lag(ordered_at) over (partition by customer_id order by ordered_at), ordered_at) as days_since_last_order 
+    -- lag() used to compare the current with the previous 
     from orders
     left join deliveries_filtered
         on orders.order_id = deliveries_filtered.order_id
