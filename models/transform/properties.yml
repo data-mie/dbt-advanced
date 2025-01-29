@@ -4,27 +4,73 @@ models:
   - name: trf_customers
     description: Each record represents a customer.
     columns:
+      - name: pk_customers
+        data_type: varchar
+        description: "key for customers"
+      - name: hk_customers
+        data_type: varchar
+        description: "foregin key for customers"
       - name: customer_id
+        data_type: float
         description: '{{ doc("customer_id") }}'
         tests:
           - unique
           - not_null
       - name: first_name
+        data_type: varchar
         description: A customer's first name.
       - name: last_name
+        data_type: varchar
         description: A customer's last name.
       - name: count_orders
+        data_type: number
         description: The number of orders a customer has had all-time.
       - name: first_order_at
+        data_type: timestamp_ntz
         description: The timestamp of a customer's first order.
       - name: most_recent_order_at
+        data_type: timestamp_ntz
         description: The timestamp of a customer's most recent order.
       - name: average_delivery_time_from_collection
+        data_type: number
         tests:
           - greater_than_zero
       - name: average_delivery_time_from_order
         tests:
           - greater_than_zero
+      - name: email
+        data_type: varchar
+        description: ""
+      - name: address
+        data_type: varchar
+        description: ""
+      - name: phone_number
+        data_type: number
+        description: ""
+      - name: created_at
+        data_type: timestamp_ntz
+        description: ""
+      - name: satisfaction_score
+        data_type: number
+        description: ""
+      - name: survey_date
+        data_type: date
+        description: ""
+      - name: count_orders_last_30_days
+        data_type: number
+        description: ""
+      - name: count_orders_last_90_days
+        data_type: number
+        description: ""
+      - name: count_orders_last_360_days
+        data_type: number
+        description: ""
+      - name: last_updated
+        data_type: timestamp_ltz
+        description: ""
+      - name: source_last_updated
+        data_type: timestamp_ntz
+        description: ""
 
   - name: trf_orders
     columns:
