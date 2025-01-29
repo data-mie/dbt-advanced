@@ -3,6 +3,6 @@ select
       state.value:state::varchar as state,
       zip_code.value:zipcode::varchar as zip_code,
       zip_code.value:city::varchar as city
-  from {{ source('geo', 'countries') }} 
+  from {{ ref('stg_geo__countries') }}
   left join lateral flatten (input => states) as state
   left join lateral flatten (input => state.value:zipcodes) as zip_code

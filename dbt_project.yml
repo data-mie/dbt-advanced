@@ -18,5 +18,9 @@ clean-targets:
 
 models:
   dbt_training:
-    #staging:
-    #  +materialized: view
+    staging:
+      #+materialized: view
+      +schema: staging
+    transform:
+      +schema: transform
+

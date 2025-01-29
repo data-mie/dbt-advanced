@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: customers
+  - name: trf_customers
     description: Each record represents a customer.
     columns:
       - name: customer_id
@@ -26,7 +26,7 @@ models:
         tests:
           - greater_than_zero
 
-  - name: orders
+  - name: trf_orders
     columns:
       - name: order_id
         tests:

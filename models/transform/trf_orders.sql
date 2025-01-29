@@ -21,7 +21,7 @@ deliveries_filtered as (
     where delivery_status = 'delivered'
 ),
 store_names as (
-select * from {{ ref('stores') }}
+select * from {{ ref('s_stores') }}
 ),
 
 joined as (
@@ -55,9 +55,10 @@ final as (
 select 
 ifnull(datediff(day, LAG(ordered_at)  OVER (PARTITION BY customer_id ORDER BY ordered_at),ordered_at),0) as days_since_last_order,
 *
-from final order by customer_id, ordered_at
+from final
 
 {% if is_incremental() %}
     -- this filter will only be applied on an incremental run
     where ordered_at > (select dateadd(day, -3, max(ordered_at)) from {{ this }} ) 
 {% endif %}
+order by customer_id, ordered_at

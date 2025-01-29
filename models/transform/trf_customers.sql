@@ -1,6 +1,6 @@
 with orders as (
     select *
-    from {{ ref('orders') }}
+    from {{ ref('trf_orders') }}
 ),
 
 customers as (
