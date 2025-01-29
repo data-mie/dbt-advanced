@@ -9,8 +9,22 @@ sources:
         columns:
           - name: id
             description: '{{ doc("customer_id") }}'
-      - name: orders
-        identifier: orders_us
+      - name: orders_us
+        description: Each record in this table represents an order in our ecommerce application.
+        columns:
+          - name: id
+            tests:
+              - unique
+              - not_null
+      - name: orders_de
+        description: Each record in this table represents an order in our ecommerce application.
+        columns:
+          - name: id
+            tests:
+              - unique
+              - not_null
+
+      - name: orders_au
         description: Each record in this table represents an order in our ecommerce application.
         columns:
           - name: id
