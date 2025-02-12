@@ -14,5 +14,5 @@ models:
         description: ""
 
       - name: color
-        data_type: varchar
+        data_type: varchar(5)
         description: ""
