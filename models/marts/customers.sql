@@ -1,3 +1,9 @@
+{{
+    config(
+        materialized='table'
+    )
+}}
+
 with orders as (
     select *
     from {{ ref('orders') }}
@@ -56,7 +62,12 @@ joined as (
 ),
 
 final as (
-    select *
+    select 
+    {{ dbt_utils.generate_surrogate_key(['customer_id']) }} as pk_customer,
+    {{ dbt_utils.generate_surrogate_key(['customer_id']) }} as hk_customer,
+    *,
+    current_timestamp as last_updated,
+    greatest_ignore_nulls(created_at, most_recent_order_at, survey_date) as source_last_updated
     from joined
 )
 

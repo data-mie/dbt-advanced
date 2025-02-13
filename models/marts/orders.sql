@@ -1,9 +1,12 @@
 {{
     config(
         materialized='incremental',
-        unique_key='order_id'
+        unique_key='order_id',
+        snowflake_warehouse = 'transforming_s'
     )
 }}
+
+
 
 with orders as (
     select *
