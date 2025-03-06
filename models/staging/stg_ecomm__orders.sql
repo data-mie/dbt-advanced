@@ -16,12 +16,16 @@ normalize_order_status as (
     select
         *,
         case 
-            when order_status ilike any('ordered', 'order_created') then 'Ordered'
-            when lower(order_status) in ('shipped', 'sent') then 'Shipped'
+            when order_status ilike any(
+                'ordered', 'order_created') then 'Ordered'
+            when lower(order_status) in ('shipped', 'sent')
+                then 'Shipped'
             when lower(order_status) = 'pending' or lower(order_status) in ('waiting', 'processing', 'payment_pending') then 'Pending'
-            when order_status = 'canceled' or  order_status = 'cancelled' then 'Canceled'
+            when order_status = 'canceled' or 
+            order_status = 'cancelled' then 'Canceled'
             when order_status = 'delivered' then 'Delivered'
-            else 'Unknown'
+            else
+                'Unknown'
         end as order_status_normalized
     from renamed
 ),
