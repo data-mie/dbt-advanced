@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: my_data_product
+  - name: my_deployed_data_product
     description: ""
     config:
       contract:
@@ -14,5 +14,5 @@ models:
         description: ""
 
       - name: color
-        data_type: varchar(5)
+        data_type: varchar
         description: ""
