@@ -2,7 +2,7 @@
     config(
         materialized='incremental',
         unique_key='order_id',
-        on_schema_change='sync_all_columns'
+        on_schema_change='append_new_columns'
     )
 }}
 
@@ -57,6 +57,7 @@ joined as (
 final as (
     select
         *,
+        datediff('day', lag(ordered_at) over (partition by customer_id order by ordered_at), ordered_at) as days_since_last_order,
         current_timestamp() as inserted_at
     from joined
 )
