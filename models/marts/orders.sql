@@ -47,7 +47,8 @@ joined as (
             deliveries_filtered.picked_up_at,
             deliveries_filtered.delivered_at
         ) as delivery_time_from_collection,
-        store_name
+        store_name,
+        greatest_ignore_nulls(orders._synced_at, deliveries_filtered._synced_at) as source_last_updated
     from orders
     left join deliveries_filtered
         on orders.order_id = deliveries_filtered.order_id
@@ -56,9 +57,19 @@ joined as (
 
 final as (
     select
-        *,
+        {{ dbt_utils.generate_surrogate_key(['order_id']) }} as pk_orders,
+        {{ dbt_utils.generate_surrogate_key(['customer_id']) }} as hk_customer,
+        order_id,
+        customer_id,
+        ordered_at,
+        order_status,
+        total_amount,
+        store_name,
+        delivery_time_from_order,
+        delivery_time_from_collection,
         datediff('day', lag(ordered_at) over (partition by customer_id order by ordered_at), ordered_at) as days_since_last_order,
-        current_timestamp() as inserted_at
+        source_last_updated,
+        current_timestamp() as last_updated
     from joined
 )
 
