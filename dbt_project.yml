@@ -19,3 +19,6 @@ clean-targets:
 models:
   dbt_training:
     +query_tag: 'dbt_course'
+    +persist_docs:
+      relation: true
+      columns: true

@@ -47,7 +47,8 @@ joined as (
             'minutes',
             deliveries_filtered.picked_up_at,
             deliveries_filtered.delivered_at
-        ) as delivery_time_from_collection
+        ) as delivery_time_from_collection,
+        greatest_ignore_nulls(orders._synced_at, deliveries_filtered._synced_at) as source_last_updated
     from orders
     left join
         deliveries_filtered
@@ -57,6 +58,8 @@ joined as (
 
 final as (
     select
+        {{ dbt_utils.generate_surrogate_key(['order_id']) }} as pk_order,
+        {{ dbt_utils.generate_surrogate_key(['customer_id']) }} as hk_customer,
         *,
         current_timestamp() as last_updated,
         datediff(
