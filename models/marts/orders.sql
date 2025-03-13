@@ -11,7 +11,12 @@ with orders as (
     from {{ ref('stg_ecomm__orders') }}
 
     {% if is_incremental() %}
-        where ORDERED_AT >= (select dateadd('day', -3, max(ORDERED_AT)) as ORDERED_AT from {{ this }})
+        where
+            ordered_at
+            >= (
+                select dateadd('day', -3, max(ordered_at)) as ordered_at
+                from {{ this }}
+            )
     {% endif %}
 ),
 
@@ -27,10 +32,10 @@ deliveries_filtered as (
 ),
 
 filtered_orders_after_stores as (
-    select * 
+    select *
     from orders
-    join stores
-    on orders.store_id = stores.store_id
+    inner join stores
+        on orders.store_id = stores.store_id
 ),
 
 joined as (
@@ -40,6 +45,7 @@ joined as (
         orders.ordered_at,
         orders.order_status,
         orders.total_amount,
+        store_name,
         datediff(
             'minutes', orders.ordered_at, deliveries_filtered.delivered_at
         ) as delivery_time_from_order,
@@ -48,8 +54,15 @@ joined as (
             deliveries_filtered.picked_up_at,
             deliveries_filtered.delivered_at
         ) as delivery_time_from_collection,
-        store_name,
-        CURRENT_TIMESTAMP() as last_updated
+        current_timestamp() as last_updated,
+          datediff(
+                'day',
+                lag(ordered_at) over (
+                partition by customer_id
+                order by ordered_at asc
+                ),
+                ordered_at
+            ) as days_since_last_order
     from filtered_orders_after_stores as orders
     left join deliveries_filtered
         on orders.order_id = deliveries_filtered.order_id
@@ -65,3 +78,15 @@ final as (
 
 select *
 from final
+
+-- select
+--     *
+-- from raw.ecomm.orders_au
+-- where id in (
+--     select
+--         id
+--     from raw.ecomm.orders_au
+--     group by 1
+--     having count(*) > 1
+-- )
+-- order by id
