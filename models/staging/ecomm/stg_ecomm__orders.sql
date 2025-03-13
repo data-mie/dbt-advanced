@@ -14,21 +14,16 @@ renamed as (
 
 normalize_order_status as (
     select
-        *,
-        -- quick & dirty, will fix later - Mike
-        case 
-            when order_status ilike any(
-                'ordered', 'order_created') then 'Ordered'
-            when lower(order_status) in ('shipped', 'sent')
-                then 'Shipped'
-            when lower(order_status) = 'pending' or lower(order_status) in ('waiting', 'processing', 'payment_pending') then 'Pending'
-            when order_status = 'canceled' or 
-            order_status = 'cancelled' then 'Canceled'
-            when order_status = 'delivered' then 'Delivered'
-            else
-                'Unknown'
-        end as order_status_normalized
+        renamed.*,
+        CASE 
+        WHEN ORDER_STATUS_NORMALIZED IS NULL THEN 'Unknown'
+        ELSE ORDER_STATUS_NORMALIZED
+        END AS ORDER_STATUS_NORMALIZED
+
     from renamed
+
+    left join order_status
+    on lower(renamed.order_status) = order_status.order_status
 ),
 
 final as (
@@ -38,3 +33,4 @@ final as (
 
 select *
 from final
+

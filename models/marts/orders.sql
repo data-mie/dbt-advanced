@@ -14,6 +14,13 @@ deliveries_filtered as (
     where delivery_status = 'delivered'
 ),
 
+filtered_orders_after_stores as (
+    select * 
+    from orders
+    join stores
+    on orders.store_id = stores.store_id
+),
+
 joined as (
     select
         orders.order_id,
@@ -28,8 +35,9 @@ joined as (
             'minutes',
             deliveries_filtered.picked_up_at,
             deliveries_filtered.delivered_at
-        ) as delivery_time_from_collection
-    from orders
+        ) as delivery_time_from_collection,
+        store_name
+    from filtered_orders_after_stores as orders
     left join deliveries_filtered
         on orders.order_id = deliveries_filtered.order_id
 ),
