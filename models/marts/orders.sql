@@ -14,9 +14,16 @@ deliveries_filtered as (
     where delivery_status = 'delivered'
 ),
 
+stores as (
+    select * from {{ref('stores')}}
+),
+
+
+
 joined as (
     select
         orders.order_id,
+        stores.store_name,
         orders.customer_id,
         orders.ordered_at,
         orders.order_status,
@@ -32,6 +39,7 @@ joined as (
     from orders
     left join deliveries_filtered
         on orders.order_id = deliveries_filtered.order_id
+    left join stores on stores.store_id = orders.store_id
 ),
 
 final as (

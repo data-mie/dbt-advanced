@@ -3,10 +3,13 @@ with source as (
     from {{ source('ecomm', 'customers') }}
 ),
 
+
+
 renamed as (
     select * rename id as customer_id
     from source
 ),
+
 
 final as (
     select *
