@@ -5,4 +5,4 @@ select
     zipcodes.value['city']::varchar as city
 from raw.geo.countries,
 lateral flatten(input => states ) as state,
-lateral flatten(input => state.value['zipcodes'] as zipcodes
+lateral flatten(input => state.value['zipcodes']) as zipcodes
