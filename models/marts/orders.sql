@@ -44,7 +44,8 @@ joined as (
 
 final as (
     select * , 
-           current_timestamp as last_updated
+           current_timestamp as last_updated,
+           datediff('day',lag(ordered_at) over ( partition by customer_id order by ordered_at), ordered_at ) as days_since_last_order 
     from joined
         {% if is_incremental() %}
         where ordered_at > (select dateadd(day, -3 , max(ordered_at) ) from {{ this }}) 
