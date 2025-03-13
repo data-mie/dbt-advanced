@@ -48,7 +48,15 @@ joined as (
             deliveries_filtered.picked_up_at,
             deliveries_filtered.delivered_at
         ) as delivery_time_from_collection,
-        current_timestamp() as last_updated
+        current_timestamp() as last_updated,
+        datediff(
+            'day',
+            lag(ordered_at) ignore nulls over (
+            partition by customer_id
+            order by ordered_at
+            ),
+            ordered_at
+    ) as days_since_last_order
     from orders
     left join deliveries_filtered
         on orders.order_id = deliveries_filtered.order_id
