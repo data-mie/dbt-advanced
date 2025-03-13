@@ -1,6 +1,15 @@
+{{ config(
+    materialized='incremental',
+    unique_id ='order_id',
+    on_schema_change='append_new_columns'
+    ) }}
+
 with orders as (
     select *
     from {{ ref('stg_ecomm__orders') }}
+{% if is_incremental() %}
+    where ordered_at >= (select dateadd('day', -3, max(ordered_at)) from {{ this }})
+{% endif %}
 ),
 
 deliveries as (
@@ -35,7 +44,8 @@ joined as (
 ),
 
 final as (
-    select *
+    select *,
+    current_timestamp() as last_updated
     from joined
 )
 
