@@ -58,8 +58,15 @@ joined as (
 final as (
     select 
         joined.*,
+        datediff('day', 
+            lag(ordered_at) over (
+                partition by customer_id 
+                order by ordered_at
+            ), 
+            ordered_at) days_since_last_order,
         current_timestamp() as last_updated
     from joined
+    
 )
 
 select *
