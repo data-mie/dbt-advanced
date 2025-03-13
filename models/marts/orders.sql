@@ -55,7 +55,8 @@ joined as (
 
 final as (
     select *,
-    current_timestamp() as last_updated
+    current_timestamp() as last_updated,
+    datediff(day, LAG(ordered_at) OVER (PARTITION BY customer_id ORDER BY ordered_at), ordered_at) AS days_since_last_order
     from joined
 )
 
