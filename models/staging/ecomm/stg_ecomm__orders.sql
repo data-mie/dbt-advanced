@@ -19,11 +19,11 @@ order_status as (
 normalize_order_status as (
     select
         renamed.*,
-        -- quick & dirty, will fix later - Mike
+        -- OPTIMIZED
          ifnull(order_status.order_status_normalized , 'Unknown') as  order_status_normalized
         
     from renamed
-     left join order_status on order_status.order_status = renamed.status 
+     left join order_status on order_status.order_status = renamed.status
 ),
 
 final as (
