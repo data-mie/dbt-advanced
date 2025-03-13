@@ -9,9 +9,6 @@
 with orders as (
     select *
     from {{ ref('stg_ecomm__orders') }}
-    {% if is_incremental() %}
-        where ordered_at > (select dateadd(day, -3 , max(ordered_at) ) from {{ this }}) 
-    {% endif %}
 ),
 
 deliveries as (
@@ -49,6 +46,9 @@ final as (
     select * , 
            current_timestamp as last_updated
     from joined
+        {% if is_incremental() %}
+        where ordered_at > (select dateadd(day, -3 , max(ordered_at) ) from {{ this }}) 
+    {% endif %}
 )
 
 select *
