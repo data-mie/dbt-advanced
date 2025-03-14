@@ -1,6 +1,24 @@
-with source as (
-    select *
-    from {{ source('ecomm', 'orders') }}
+with sources as (
+    {{ 
+        dbt_utils.union_relations(
+            relations = [
+                source('ecomm', 'orders_us'),
+                source('ecomm', 'orders_de'),
+                source('ecomm', 'orders_au')
+            ]
+        )
+    }}
+),
+
+populate_store_ids as (
+    select
+        * exclude (store_id),
+        case
+            when _dbt_source_relation = 'raw.ecomm.orders_us' then 1
+            when _dbt_source_relation = 'raw.ecomm.orders_de' then 2
+            when _dbt_source_relation = 'raw.ecomm.orders_au' then 3
+        end as store_id
+    from sources
 ),
 
 renamed as (
@@ -9,7 +27,17 @@ renamed as (
         id as order_id,
         created_at as ordered_at,
         status as order_status
-    from source
+    from populate_store_ids
+),
+
+deduplicated as (
+    {{
+        dbt_utils.deduplicate(
+            relation = 'renamed',
+            partition_by = 'order_id',
+            order_by = "_synced_at desc",
+        )
+    }}
 ),
 
 order_status as (
@@ -20,11 +48,11 @@ order_status as (
 
 normalize_order_status as (
     select
-        renamed.*,
+        deduplicated.*,
         coalesce(order_status.order_status_normalized, 'Unknown') as order_status_normalized
-    from renamed
+    from deduplicated
     left join order_status 
-        on lower(renamed.status) = order_status.order_status 
+        on lower(deduplicated.status) = order_status.order_status 
 ),
 
 final as (
