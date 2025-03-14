@@ -1,8 +1,8 @@
-name: 'dbt_training'
-version: '1.0.0'
+name: "dbt_training"
+version: "1.0.0"
 config-version: 2
 
-profile: 'default'
+profile: "default"
 
 model-paths: ["models"]
 analysis-paths: ["analyses"]
@@ -21,7 +21,11 @@ models:
     #staging:
     #  +materialized: view
 
-     ## elementary models will be created in the schema '<your_schema>_elementary'
+    ## elementary models will be created in the schema '<your_schema>_elementary'
   ## for details, see docs: https://docs.elementary-data.com/
   elementary:
     +schema: "elementary"
+
+  +persist_docs:
+    relation: true
+    columns: true

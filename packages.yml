@@ -4,3 +4,6 @@ packages:
 
   - package: elementary-data/elementary
     version: 0.16.3
+
+  - package: dbt-labs/codegen
+    version: 0.13.1

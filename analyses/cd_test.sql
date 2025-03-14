@@ -1,1 +1,1 @@
-select * from {{ref('stores')}}
+{{ codegen.generate_model_yaml(['orders']) }}

@@ -34,6 +34,9 @@ stores as (
 
 joined as (
     select
+        {{ dbt_utils.generate_surrogate_key(['orders.order_id']) }} as pk_orders,
+        {{ dbt_utils.generate_surrogate_key(['customer_id']) }} as hk_customer,
+        greatest_ignore_nulls(orders._synced_at, deliveries_filtered._synced_at) as source_last_updated,
         orders.order_id,
         stores.store_name,
         orders.customer_id,
