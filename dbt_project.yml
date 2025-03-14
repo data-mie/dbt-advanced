@@ -20,3 +20,8 @@ models:
   dbt_training:
     #staging:
     #  +materialized: view
+
+     ## elementary models will be created in the schema '<your_schema>_elementary'
+  ## for details, see docs: https://docs.elementary-data.com/
+  elementary:
+    +schema: "elementary"

@@ -9,6 +9,6 @@
     )
 }}
 
-    select * from {{ source('ecomm', 'orders') }}
+    select * from {{ source('ecomm', 'orders_us') }}
 
 {% endsnapshot %}
