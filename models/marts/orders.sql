@@ -39,7 +39,6 @@ joined as (
         orders.ordered_at,
         orders.order_status,
         orders.total_amount,
-        current_timestamp() as last_updated,
         datediff(
             'minutes', orders.ordered_at, deliveries_filtered.delivered_at
         ) as delivery_time_from_order,
@@ -56,7 +55,15 @@ joined as (
 ),
 
 final as (
-    select *
+    select *,
+        current_timestamp() as last_updated,
+
+        datediff( day,
+                lag(ordered_at) over (
+                    partition by customer_id
+                    order by ordered_at),
+                ordered_at
+                ) as days_since_last_order
     from joined
 )
 
