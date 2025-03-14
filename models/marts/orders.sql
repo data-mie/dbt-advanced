@@ -1,13 +1,25 @@
+{{
+    config(
+        materialized='incremental',
+        unique_key='order_id',
+        on_schema_change='append_new_columns'
+    )
+}}
+
 with orders as (
     select *
     from {{ ref('stg_ecomm__orders') }}
+    {% if is_incremental() %}
+    -- this filter will only be applied on an incremental run
+    where ordered_at > (select dateadd('day', -3, max(ordered_at)) from {{ this }}) 
+{% endif %}
 ),
 
 deliveries as (
     select *
     from {{ ref('stg_ecomm__deliveries') }}
 ),
-
+ 
 deliveries_filtered as (
     select *
     from deliveries
@@ -34,11 +46,12 @@ joined as (
             'minutes',
             deliveries_filtered.picked_up_at,
             deliveries_filtered.delivered_at
-        ) as delivery_time_from_collection
+        ) as delivery_time_from_collection,
+        current_timestamp() as last_updated
     from orders
     left join
         deliveries_filtered
-        on (orders.order_id = deliveries_filtered.order_id)
+        on orders.order_id = deliveries_filtered.order_id
     left join stores_list on (orders.store_id = stores_list.store_id)
 ),
 
