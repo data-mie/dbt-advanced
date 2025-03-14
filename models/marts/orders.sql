@@ -55,7 +55,8 @@ joined as (
             ),
             ordered_at
         ) as days_since_last_order,
-        current_timestamp() as last_updated
+        current_timestamp() as last_updated,
+        greatest_ignore_nulls(orders._synced_at, deliveries_filtered._synced_at) as source_last_updated
     from orders
     left join deliveries_filtered
         on orders.order_id = deliveries_filtered.order_id
@@ -64,7 +65,10 @@ joined as (
 ),
 
 final as (
-    select *
+    select 
+    {{ dbt_utils.generate_surrogate_key(['order_id']) }} as pk_orders,
+    {{ dbt_utils.generate_surrogate_key(['customer_id']) }} as hk_customer,    
+    *
     from joined
 )
 

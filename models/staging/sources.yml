@@ -9,7 +9,7 @@ sources:
         columns:
           - name: id
             description: '{{ doc("customer_id") }}'
-      - name: orders
+      - name: orders_us
         identifier: orders_us
         description: Each record in this table represents an order in our ecommerce application.
         columns:
@@ -19,6 +19,23 @@ sources:
               - not_null
       - name: deliveries
         description: Each record in this table represents an order delivery in our ecommerce application.
+
+      - name: orders_de
+        description: Each record in this table represents an order in our ecommerce store in Germany
+        columns:
+          - name: id
+            tests:
+              - unique
+              - not_null
+
+      - name: orders_au
+        description: Each record in this table represents an order in our ecommerce store in Australia
+        columns:
+          - name: id
+            tests:
+              - unique:
+                  severity: warn
+              - not_null
 
   - name: sheets
     database: raw
