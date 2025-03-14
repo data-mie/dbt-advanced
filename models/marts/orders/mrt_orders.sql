@@ -49,7 +49,8 @@ joined as (
             order by ordered_at
             ),
             ordered_at
-        ) as days_since_last_order
+        ) as days_since_last_order,
+        greatest(orders._synced_at, deliveries_filtered._synced_at) as source_last_updated
     from orders
     left join deliveries_filtered
         on orders.order_id = deliveries_filtered.order_id
@@ -57,7 +58,9 @@ joined as (
 ),
 
 final as (
-    select *
+    select {{ dbt_utils.generate_surrogate_key(['order_id']) }} as pk_mrt_orders,
+        {{ dbt_utils.generate_surrogate_key(['customer_id']) }} as hk_customer,
+        *
     from joined
     {% if is_incremental() %}
         -- this filter will only be applied on an incremental run
