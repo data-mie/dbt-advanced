@@ -27,14 +27,70 @@ models:
           - greater_than_zero
 
   - name: orders
+    config:
+      contract:
+        enforced: true
+    versions:
+      - v: 1
+    description: Each record represents a order.
     columns:
-      - name: order_id
+      - name: pk_orders
+        data_type: varchar
+        description: "Primary Key"
+        constraints:
+          - type: primary_key
         tests:
           - unique
           - not_null
+
+      - name: hk_customer
+        data_type: varchar
+        description: "Customer Hash Key"
+
+      - name: order_id
+        data_type: varchar
+        description: ""
+
+      - name: customer_id
+        data_type: number
+        description: ""
+
+      - name: ordered_at
+        data_type: timestamp_ntz
+        description: ""
+
+      - name: order_status
+        data_type: varchar
+        description: ""
+
+      - name: total_amount
+        data_type: float
+        description: ""
+
+      - name: store_name
+        data_type: varchar
+        description: ""
+
       - name: delivery_time_from_collection
+        data_type: number
+        description: ""
         tests:
           - greater_than_zero
+
       - name: delivery_time_from_order
+        data_type: number
+        description: ""
         tests:
           - greater_than_zero
+
+      - name: source_last_updated
+        data_type: timestamp_ntz
+        description: "{{ doc('source_last_updated') }}"
+
+      - name: last_updated
+        data_type: timestamp_ltz
+        description: "{{ doc('last_updated') }}"
+
+      - name: days_since_last_order
+        data_type: number
+        description: ""
