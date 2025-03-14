@@ -1,0 +1,60 @@
+version: 2
+
+models:
+  - name: orders
+    versions:
+      - v: 1
+    config:
+      contract:
+        enforced: true
+    description: ""
+    columns:
+      - name: pk_orders
+        data_type: varchar
+        description: ""
+        constraints:
+          - type: primary_key
+
+      - name: hk_customer
+        data_type: varchar
+        description: ""
+
+      - name: order_id
+        data_type: varchar
+        description: ""
+
+      - name: customer_id
+        data_type: number
+        description: ""
+
+      - name: ordered_at
+        data_type: timestamp_ntz
+        description: ""
+
+      - name: order_status
+        data_type: varchar
+        description: ""
+
+      - name: total_amount
+        data_type: float
+        description: ""
+
+      - name: delivery_time_from_order
+        data_type: number
+        description: ""
+
+      - name: delivery_time_from_collection
+        data_type: number
+        description: ""
+
+      - name: days_since_last_order
+        data_type: number
+        description: ""
+
+      - name: last_updated
+        data_type: timestamp_ltz
+        description: ""
+
+      - name: source_last_updated
+        data_type: timestamp_ntz
+        description: ""
