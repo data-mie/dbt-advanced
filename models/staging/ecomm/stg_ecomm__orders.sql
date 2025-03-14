@@ -15,6 +15,7 @@ renamed as (
 normalize_order_status as (
     select
         *,
+        
         -- quick & dirty, will fix later - Mike
         case 
             when order_status ilike any(
