@@ -20,6 +20,9 @@ models:
   dbt_training:
     #staging:
     #  +materialized: view
+     +persist_docs:
+      relation: true
+      columns: true
 
   elementary:
     +schema: "elementary"
