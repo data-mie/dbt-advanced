@@ -2,7 +2,7 @@
     config(
         materialized='incremental',
         unique_key='order_id',
-        n_schema_change='append_new_columns'
+        on_schema_change='append_new_columns'
     )
 }}
 
@@ -45,6 +45,8 @@ joined as (
         orders.ordered_at,
         orders.order_status,
         orders.total_amount,
+        orders.pk_orders,
+        orders.hk_customer,
         store_name,
         datediff(
             'minutes', orders.ordered_at, deliveries_filtered.delivered_at

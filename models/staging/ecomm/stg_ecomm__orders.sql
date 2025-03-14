@@ -16,7 +16,7 @@ renamed as (
         id as order_id,
         created_at as ordered_at,
         status as order_status,
-        right(_dbt_source_relation, '2') as country_code
+        right(_dbt_source_relation, '2') as country_code,
     from source
 ),
 
@@ -52,9 +52,20 @@ normalize_order_status as (
     on lower(deduplicate.order_status) = order_status.order_status
 ),
 
+add_metadata as (
+    select 
+    {{ dbt_utils.generate_surrogate_key(['order_id']) }} as pk_orders,
+    {{ dbt_utils.generate_surrogate_key(['customer_id']) }} as hk_customer,
+    *,
+    current_timestamp as last_updated,
+    _synced_at as source_last_updated
+    from
+    normalize_order_status
+),
+
 final as (
     select *
-    from normalize_order_status
+    from add_metadata
 )
 
 select *

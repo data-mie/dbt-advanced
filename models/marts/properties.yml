@@ -26,15 +26,69 @@ models:
         tests:
           - greater_than_zero
 
+
   - name: orders
+    versions:
+      - v: 1
+    config:
+      contract:
+        enforced: true
+    description: |
+      Orders data product from the dbt Training Lab with Simo and Marvin.
+      Each record represents a order from the e-commerce system.
+
     columns:
-      - name: order_id
+      - name: pk_orders
+        data_type: varchar
+        description: Unique Primary Key of this table based on the order_id
         tests:
           - unique
-          - not_null
-      - name: delivery_time_from_collection
-        tests:
-          - greater_than_zero
+
+      - name: hk_customer
+        data_type: varchar
+        description: Foreign Key to the customer based on the customer_id
+
+      - name: order_id
+        data_type: varchar
+        description: Source system generated order ID
+
+      - name: customer_id
+        data_type: number
+        description: Source system generated customer ID
+
+      - name: ordered_at
+        data_type: timestamp_ntz
+        description: Timestamp of the generated order
+
+      - name: order_status
+        data_type: varchar
+        description: Cleaned order status [Ordered, Shipped, Pending, Canceled, Delivered, Unknown]
+
+      - name: total_amount
+        data_type: float
+        description: Order total amount
+
       - name: delivery_time_from_order
+        data_type: number
+        description: Delivery time starting from the point of order
         tests:
           - greater_than_zero
+
+      - name: delivery_time_from_collection
+        data_type: number
+        description: Delivery time starting from the point of parcel pickup
+        tests:
+          - greater_than_zero
+
+      - name: store_name
+        data_type: varchar
+        description: Store name (country)
+
+      - name: days_since_last_order
+        data_type: number
+        description: Days since last order per customer
+
+
+      - name: last_updated
+        data_type: timestamp_ltz
+        description: ""
