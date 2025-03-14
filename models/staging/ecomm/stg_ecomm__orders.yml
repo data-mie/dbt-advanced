@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: stg_ecomm__orders
+    columns:
+      - name: store_id
+        tests: 
+          - not_null
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+       
