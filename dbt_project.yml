@@ -20,3 +20,6 @@ models:
   dbt_training:
     #staging:
     #  +materialized: view
+
+  elementary:
+    +schema: "elementary"
