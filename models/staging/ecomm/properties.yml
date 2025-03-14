@@ -1,0 +1,11 @@
+models:
+  - name: stg_ecomm_orders
+    description: Each record represents an order.
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+      - name: store_id
+        tests:
+          - not_null
