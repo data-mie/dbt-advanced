@@ -29,3 +29,8 @@ sources:
     database: raw
     tables:
       - name: payments
+ 
+  - name: geo
+    database: raw
+    tables:
+      - name: countries
