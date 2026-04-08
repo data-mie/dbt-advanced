@@ -17,6 +17,5 @@ clean-targets:
   - "dbt_packages"
 
 models:
-  +dbt_training:
-    #staging:
-    #  +materialized: view
+  dbt_training:
+    +materialized: view
