@@ -2,4 +2,4 @@
 
 select
     1 as id,
-    'blue' as colour
+    'blue' as color
