@@ -13,6 +13,6 @@ models:
         data_type: number
         description: ""
 
-      - name: color
+      - name: colour
         data_type: varchar
         description: ""
