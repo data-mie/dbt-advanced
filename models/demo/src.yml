@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: demo
+    database: breakout_labs
+    schema: dbt_advanced_patricia
+    tables:
+      - name: raw_orders
