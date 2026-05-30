@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: my_deployed_data_product
+    description: ""
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: id
+        data_type: number(1)
+        description: ""
+
+      - name: color
+        data_type: varchar
+        description: ""
