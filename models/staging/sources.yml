@@ -29,3 +29,9 @@ sources:
     database: raw
     tables:
       - name: payments
+
+  - name: snapshot_demo
+    database: demo
+    schema: snapshots
+    tables:
+      - name: orders
