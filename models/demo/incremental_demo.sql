@@ -17,6 +17,5 @@ select
     order_date,
     amount,
     status,
-    ingested_at,
-    current_timestamp() updated_at
+    current_timestamp() as ingested_at
 from orders
