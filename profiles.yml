@@ -11,4 +11,4 @@ default:
       database: BREAKOUT_LABS
       schema: dbt_advanced_{{ env_var('SNOWFLAKE_USER') }}
       threads: 4
-      client_session_keep_alive: false% 
+      client_session_keep_alive: false
