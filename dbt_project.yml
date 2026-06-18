@@ -2,7 +2,7 @@ name: 'dbt_training'
 version: '1.0.0'
 config-version: 2
 
-profile: 'default'
+profile: 'dbt_training_advanced'
 
 model-paths: ["models"]
 analysis-paths: ["analyses"]

@@ -1,0 +1,14 @@
+dbt_training_advanced:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: BREAKOUTLABS-PROD_ILT
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
+      role: INSTRUCTOR
+      warehouse: TRANSFORMING_S
+      database: BREAKOUT_LABS
+      schema: dbt_advanced_{{ env_var('SNOWFLAKE_USER') }}
+      threads: 4
+      client_session_keep_alive: false% 
