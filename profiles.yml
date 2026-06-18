@@ -1,4 +1,4 @@
-dbt_training_advanced:
+default:
   target: dev
   outputs:
     dev:
