@@ -6,7 +6,7 @@ models:
     columns:
       - name: customer_id
         description: '{{ doc("customer_id") }}'
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: first_name
@@ -20,21 +20,21 @@ models:
       - name: most_recent_order_at
         description: The timestamp of a customer's most recent order.
       - name: average_delivery_time_from_collection
-        tests:
+        data_tests:
           - greater_than_zero
       - name: average_delivery_time_from_order
-        tests:
+        data_tests:
           - greater_than_zero
 
   - name: orders
     columns:
       - name: order_id
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: delivery_time_from_collection
-        tests:
+        data_tests:
           - greater_than_zero
       - name: delivery_time_from_order
-        tests:
+        data_tests:
           - greater_than_zero

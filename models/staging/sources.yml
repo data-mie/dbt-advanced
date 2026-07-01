@@ -14,7 +14,7 @@ sources:
         description: Each record in this table represents an order in our ecommerce application.
         columns:
           - name: id
-            tests:
+            data_tests:
               - unique
               - not_null
       - name: deliveries

@@ -7,4 +7,5 @@ dbt_internal_packages/
 logs/
 .user.yml
 dbt_cloud.yml
-profiles.yml
+
+.venv/
